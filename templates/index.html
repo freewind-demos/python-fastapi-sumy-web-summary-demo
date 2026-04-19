@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ tool_name }} Web Summary Demo</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">{{ tool_name }}</p>
+          <h1>网页提取后再压缩成短摘要</h1>
+          <p class="lead">{{ subtitle }}</p>
+        </div>
+        <div class="hero-side">
+          <p>这个 demo 看什么</p>
+          <ul>
+            <li>正文抽取是否干净</li>
+            <li>摘要句是否抓住主线</li>
+            <li>元数据提取是否完整</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel">
+        <form id="summary-form">
+          <label for="url-input">网页 URL</label>
+          <div class="row">
+            <input
+              id="url-input"
+              type="url"
+              value="https://github.com/joewongjc/type4me"
+              placeholder="https://example.com/article"
+              required
+            />
+            <input
+              id="summary-limit-input"
+              type="number"
+              min="80"
+              step="20"
+              value="2000"
+              title="最大摘要长度（字符数）"
+              aria-label="最大摘要长度（字符数）"
+            />
+            <button id="submit-button" type="submit">摘要</button>
+          </div>
+          <p class="hint">{{ hint }}</p>
+        </form>
+
+        <div id="status" class="status">等待输入 URL。</div>
+
+        <section id="results" class="results hidden">
+          <header class="result-header">
+            <div>
+              <p id="tool-name" class="tool-name"></p>
+              <h2 id="title"></h2>
+            </div>
+            <p id="meta" class="meta"></p>
+          </header>
+
+          <section id="pipeline-flow" class="pipeline-flow"></section>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
