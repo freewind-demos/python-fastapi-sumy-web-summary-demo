@@ -28,7 +28,7 @@ LANGUAGE = "english"
 
 class SummaryRequest(BaseModel):
     url: HttpUrl
-    maxSummaryLength: int = Field(default=400, ge=80, le=4000)
+    maxSummaryLength: int = Field(default=0)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -154,6 +154,8 @@ def measure_text(text: str) -> dict[str, int]:
 
 def limit_summary_length(summary: list[str], max_length: int) -> list[str]:
     joined = "\n\n".join(summary).strip()
+    if max_length <= 0:
+        return summary
     if len(joined) <= max_length:
         return summary
     return [joined[:max_length].strip()]

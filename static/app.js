@@ -7,7 +7,7 @@ const results = document.querySelector('#results');
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  await summarize(urlInput.value, Number(summaryLimitInput.value || 400));
+  await summarize(urlInput.value, Number(summaryLimitInput.value || 0));
 });
 
 async function summarize(url, maxSummaryLength) {
@@ -25,7 +25,7 @@ async function summarize(url, maxSummaryLength) {
 
     const payload = await parseApiResponse(response);
     if (!response.ok) {
-      throw new Error(payload.detail || payload.error || '摘要失败');
+      throw new Error(readableError(payload.detail || payload.error || '摘要失败'));
     }
 
     render(payload);
@@ -65,6 +65,22 @@ async function parseApiResponse(response) {
   }
   const text = await response.text();
   return { error: text || `HTTP ${response.status}` };
+}
+
+function readableError(value) {
+  if (typeof value === 'string') {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => readableError(item)).join('; ');
+  }
+  if (value && typeof value === 'object') {
+    if (typeof value.msg === 'string') {
+      return value.msg;
+    }
+    return JSON.stringify(value);
+  }
+  return '摘要失败';
 }
 
 function renderPipeline(payload) {
